@@ -646,15 +646,17 @@ public abstract class OptionalParameter {
 	 * @author stefanth
 	 *
 	 */
-	public static class Source_telematics_id extends OptionalParameter.Byte {
-
-		public Source_telematics_id(byte value) {
-			super(Tag.SOURCE_TELEMATICS_ID, value);
-		}
+	
+	public static class Source_telematics_id extends OptionalParameter.COctetString {
 
 		public Source_telematics_id(byte[] content) {
 			super(Tag.SOURCE_TELEMATICS_ID.code, content);
 		}
+
+		public Source_telematics_id(String content) {
+			super(Tag.SOURCE_TELEMATICS_ID.code, content);
+		}
+
 	}
 
 	/**
@@ -2182,6 +2184,46 @@ public abstract class OptionalParameter {
 		}
 	}
 
+    public static class Custom_TLV_1403 extends OptionalParameter.COctetString {
+
+        public Custom_TLV_1403(byte value[]) {
+            super(Tag.CUSTOM_TLV_1403.code, value);
+        }
+
+    }
+
+	public static class Mts_service_id extends OptionalParameter.OctetString {
+
+		public Mts_service_id(byte value[]) {
+			super(Tag.MTS_SERVICE_ID.code, value);
+		}
+
+	}
+
+	public static class Mts_transaction_id extends OptionalParameter.COctetString {
+
+		public Mts_transaction_id(byte value[]) {
+			super(Tag.MTS_TRANSACTION_ID.code, value);
+		}
+
+	}
+
+	public static class Custom_TLV_2001 extends OptionalParameter.COctetString {
+
+		public Custom_TLV_2001(byte value[]) {
+			super(Tag.CUSTOM_TLV_2001.code, value);
+		}
+
+	}
+
+	public static class Astelit_service_id extends OptionalParameter.OctetString {
+
+		public Astelit_service_id(byte value[]) {
+			super(Tag.ASTELIT_SERVICE_ID.code, value);
+		}
+
+	}
+
     /**
      * Is all the defined SMPP Optional Parameters.
      * 
@@ -2236,10 +2278,26 @@ public abstract class OptionalParameter {
         ALERT_ON_MESSAGE_DELIVERY(0x130C, Alert_on_message_delivery.class), 
         ITS_REPLY_TYPE(0x1380, Its_reply_type.class), 
         ITS_SESSION_INFO(0x1383, Its_session_info.class),
-        VENDOR_SPECIFIC_SOURCE_MSC_ADDR(0x1501, Vendor_specific_source_msc_addr.class),
-        VENDOR_SPECIFIC_DEST_MSC_ADDR(0x1502, Vendor_specific_dest_msc_addr.class);
 
-        private final short code;
+        //GMS Param HEX 0x1403
+        CUSTOM_TLV_1403(0x1403, Custom_TLV_1403.class),
+
+        VENDOR_SPECIFIC_SOURCE_MSC_ADDR(0x1501, Vendor_specific_source_msc_addr.class),
+        VENDOR_SPECIFIC_DEST_MSC_ADDR(0x1502, Vendor_specific_dest_msc_addr.class),
+
+		//MTS Param HEX 0x1775
+		MTS_SERVICE_ID(0x1775, Mts_service_id.class),
+
+		//MTS Param HEX 0x1776
+		MTS_TRANSACTION_ID(0x1776, Mts_transaction_id.class),
+
+		//ASTELIT Param HEX 0x2001
+		CUSTOM_TLV_2001(0x2001, Custom_TLV_2001.class),
+
+		//ASTELIT Param HEX 0x2010
+		ASTELIT_SERVICE_ID(0x2010, Astelit_service_id.class);
+
+		private final short code;
         final Class<? extends OptionalParameter> type;
 
         private Tag(int code, Class<? extends OptionalParameter> type) {

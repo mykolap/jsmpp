@@ -201,10 +201,20 @@ public class OptionalParameters {
             	return new OptionalParameter.Its_reply_type(content);
             case ITS_SESSION_INFO:
             	return new OptionalParameter.Its_session_info(content);
+            case CUSTOM_TLV_1403:
+                return new OptionalParameter.Custom_TLV_1403(content);
             case VENDOR_SPECIFIC_SOURCE_MSC_ADDR:
                 return new OptionalParameter.Vendor_specific_source_msc_addr(content);
             case VENDOR_SPECIFIC_DEST_MSC_ADDR:
                 return new OptionalParameter.Vendor_specific_dest_msc_addr(content);
+            case MTS_SERVICE_ID:
+                return new OptionalParameter.Mts_service_id(content);
+            case MTS_TRANSACTION_ID:
+                return new OptionalParameter.Mts_transaction_id(content);
+            case CUSTOM_TLV_2001:
+                return new OptionalParameter.Custom_TLV_2001(content);
+            case ASTELIT_SERVICE_ID:
+                return new OptionalParameter.Astelit_service_id(content);
             default:
                 logger.warn("Missing code in deserialize to handle Optional Parameter Tag: {}", tag);
         }

@@ -33,26 +33,8 @@ import org.jsmpp.PDUSender;
 import org.jsmpp.PDUStringException;
 import org.jsmpp.SMPPConstant;
 import org.jsmpp.SynchronizedPDUSender;
-import org.jsmpp.bean.Address;
-import org.jsmpp.bean.AlertNotification;
-import org.jsmpp.bean.BindResp;
-import org.jsmpp.bean.BindType;
-import org.jsmpp.bean.Command;
-import org.jsmpp.bean.DataCoding;
-import org.jsmpp.bean.DataSm;
-import org.jsmpp.bean.DeliverSm;
-import org.jsmpp.bean.ESMClass;
-import org.jsmpp.bean.InterfaceVersion;
-import org.jsmpp.bean.NumberingPlanIndicator;
-import org.jsmpp.bean.OptionalParameter;
+import org.jsmpp.bean.*;
 import org.jsmpp.bean.OptionalParameter.Sc_interface_version;
-import org.jsmpp.bean.QuerySmResp;
-import org.jsmpp.bean.RegisteredDelivery;
-import org.jsmpp.bean.ReplaceIfPresentFlag;
-import org.jsmpp.bean.SubmitMultiResp;
-import org.jsmpp.bean.SubmitMultiResult;
-import org.jsmpp.bean.SubmitSmResp;
-import org.jsmpp.bean.TypeOfNumber;
 import org.jsmpp.extra.NegativeResponseException;
 import org.jsmpp.extra.PendingResponse;
 import org.jsmpp.extra.ProcessRequestException;
@@ -316,20 +298,44 @@ public class SMPPSession extends AbstractSession implements ClientSession {
             OptionalParameter... optionalParameters) throws PDUException,
             ResponseTimeoutException, InvalidResponseException,
             NegativeResponseException, IOException {
-    	
-        ensureTransmittable("submitShortMessage");
-    	
-        SubmitSmCommandTask submitSmTask = new SubmitSmCommandTask(
-                pduSender(), serviceType, sourceAddrTon, sourceAddrNpi,
-                sourceAddr, destAddrTon, destAddrNpi, destinationAddr,
-                esmClass, protocolId, priorityFlag, scheduleDeliveryTime,
-                validityPeriod, registeredDelivery, replaceIfPresentFlag,
-                dataCoding, smDefaultMsgId, shortMessage, optionalParameters);
-    	
-        SubmitSmResp resp = (SubmitSmResp)executeSendCommand(submitSmTask, getTransactionTimer());
+
+		SubmitSmResp resp = (SubmitSmResp)submitShortMessageCommand(serviceType,
+				sourceAddrTon, sourceAddrNpi,
+				sourceAddr, destAddrTon,
+				destAddrNpi, destinationAddr,
+				esmClass, protocolId, priorityFlag,
+				scheduleDeliveryTime, validityPeriod,
+				registeredDelivery, replaceIfPresentFlag,
+				dataCoding, smDefaultMsgId, shortMessage,
+				optionalParameters);
     	return resp.getMessageId();
+
     }
-    
+
+	public Command submitShortMessageCommand(String serviceType,
+													TypeOfNumber sourceAddrTon, NumberingPlanIndicator sourceAddrNpi,
+													String sourceAddr, TypeOfNumber destAddrTon,
+													NumberingPlanIndicator destAddrNpi, String destinationAddr,
+													ESMClass esmClass, byte protocolId, byte priorityFlag,
+													String scheduleDeliveryTime, String validityPeriod,
+													RegisteredDelivery registeredDelivery, byte replaceIfPresentFlag,
+													DataCoding dataCoding, byte smDefaultMsgId, byte[] shortMessage,
+													OptionalParameter... optionalParameters) throws PDUException,
+			ResponseTimeoutException, InvalidResponseException,
+			NegativeResponseException, IOException {
+
+		ensureTransmittable("submitShortMessage");
+
+		SubmitSmCommandTask submitSmTask = new SubmitSmCommandTask(
+				pduSender(), serviceType, sourceAddrTon, sourceAddrNpi,
+				sourceAddr, destAddrTon, destAddrNpi, destinationAddr,
+				esmClass, protocolId, priorityFlag, scheduleDeliveryTime,
+				validityPeriod, registeredDelivery, replaceIfPresentFlag,
+				dataCoding, smDefaultMsgId, shortMessage, optionalParameters);
+
+		return executeSendCommand(submitSmTask, getTransactionTimer());
+	}
+
     /* (non-Javadoc)
      * @see org.jsmpp.session.ClientSession#submitMultiple(java.lang.String, org.jsmpp.bean.TypeOfNumber, org.jsmpp.bean.NumberingPlanIndicator, java.lang.String, org.jsmpp.bean.Address[], org.jsmpp.bean.ESMClass, byte, byte, java.lang.String, java.lang.String, org.jsmpp.bean.RegisteredDelivery, org.jsmpp.bean.ReplaceIfPresentFlag, org.jsmpp.bean.DataCoding, byte, byte[], org.jsmpp.bean.OptionalParameter[])
      */
